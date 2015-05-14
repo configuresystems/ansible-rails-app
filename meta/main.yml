@@ -1,0 +1,36 @@
+---
+
+dependencies: []
+#  - { role: ansible-apache2-passenger, sudo: yes, when: INIT is defined }
+#  - { role: ansible-mysql, sudo: yes, when: INIT is defined }
+
+galaxy_info:
+  author: John Martin
+  description: 'ansible-rails-app described in 1 sentence...'
+  company: Configure Systems
+  license: MIT
+  min_ansible_version: '1.7.1'
+  platforms:
+    - name: Ubuntu
+      versions:
+        - precise
+        - trusty
+    - name: Debian
+      versions:
+        - wheezy
+        - jessie
+  categories: []
+
+ansigenome_info:
+  galaxy_id: ''
+
+  travis: True
+
+  synopsis: |
+    ansible-rails-app described in a few paragraphs....
+
+  usage: |
+    Describe how to use ansible-rails-app...
+
+  #custom: |
+  #  Any custom output you want after the usage section...

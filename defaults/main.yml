@@ -1,0 +1,39 @@
+---
+
+gitRepo: https://github.com/publify/publify.git
+gitDest: ~/app
+gitVersion: master
+
+# Role Dependencies
+INIT: no
+MIGRATE: yes
+
+# ansible-rvm
+rubies:
+  - 'ruby-2.1.5'
+GEM: yes
+
+# ansible-users but others depend on a username for specific user setup
+username: rails
+
+# ansible-mysql
+dbusername: 'publify'
+dbpassword: 'r@t3D f04r N0ods'
+
+# ansible-apache2-passenger
+server_name: 'configure.systems'
+server_alias: 'www.configure.systems'
+document_root: '/home/{{ username }}/app'
+document_owner: '{{ username }}'
+document_group: '{{ username }}'
+SELF_SIGNED: false
+PASSENGER: true
+
+# ansible-mysql
+mysql_root_password: 'Th1s 3s 4 T3st four tH3 #s'
+mysql_users: [
+  { name: publify,
+    host: 'localhost',
+    password: 'r@t3D f04r N0ods',
+    priv: '*.*:ALL' }
+    ]

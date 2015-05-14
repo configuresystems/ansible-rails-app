@@ -1,0 +1,45 @@
+---
+
+- name: Clone Rails App Repo
+  git: repo={{ gitRepo }}
+       dest={{ gitDest }}
+       version={{ gitVersion }}
+
+- name: Copy DB Template
+  template: src=database.postgresql.yml.j2
+            dest=/home/{{ username }}/app/config/database.yml
+
+- name: install prerequisits
+  apt: name={{ item }}
+       state=latest
+       update_cache=yes
+  with_items:
+    - libcurl3-dev
+  sudo: yes
+
+- name: install Bundle
+  raw: export PATH=${HOME}/.rvm/bin:${PATH} && bash -lc 'gem install bundle'
+
+- name: Exec Bundler
+  raw: export PATH=${HOME}/.rvm/bin:${PATH} && cd /home/{{ username }}/app && bash -lc 'bundle install'
+  when: INIT is defined
+
+- name: Rake DB Setup
+  raw: export PATH=${HOME}/.rvm/bin:${PATH} && cd /home/{{ username }}/app && bash -lc 'rake db:setup'
+  when: INIT is defined
+
+- name: Rake DB Migrate
+  raw: export PATH=${HOME}/.rvm/bin:${PATH} && cd /home/{{ username }}/app && bash -lc 'rake db:migrate'
+  when: MIGRATE is defined or INIT is defined
+
+- name: Rake DB Seed
+  raw: export PATH=${HOME}/.rvm/bin:${PATH} && cd /home/{{ username }}/app && bash -lc 'rake db:seed'
+  when: INIT is defined
+
+- name: Rake Assets Precompile
+  raw: export PATH=${HOME}/.rvm/bin:${PATH} && cd /home/{{ username }}/app && bash -lc 'rake assets:precompile'
+
+- name: restart apache2
+  service: name=apache2
+           state=restarted
+  sudo: yes
