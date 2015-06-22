@@ -1,6 +1,7 @@
 login: &login
   adapter: postgresql
-  host: localhost
+  schema_search_path: "{{ schema_search_path }}"
+  host: {{ db_host }}
   port: 5432
   username: {{ dbusername }}
   password: "{{ dbpassword }}"
@@ -9,18 +10,17 @@ connection: &connection
   encoding: unicode
   pool: 5
 
-
 development:
-  database: publify_dev
+  database: {{ db_name }}_dev
   <<: *login
   <<: *connection
 
 test:
-  database: publify_tests
+  database: {{ db_name }}_tests
   <<: *login
   <<: *connection
 
 production:
-  database: publify
+  database: {{ db_name }}
   <<: *login
   <<: *connection

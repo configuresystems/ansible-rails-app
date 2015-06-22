@@ -19,6 +19,9 @@ username: rails
 # ansible-mysql
 dbusername: 'publify'
 dbpassword: 'r@t3D f04r N0ods'
+schema_search_path: 'public'
+db_host: localhost
+db_name: publify
 
 # ansible-apache2-passenger
 server_name: 'configure.systems'

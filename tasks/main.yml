@@ -4,6 +4,7 @@
   git: repo={{ gitRepo }}
        dest={{ gitDest }}
        version={{ gitVersion }}
+       accept_hostkey=yes
 
 - name: Copy DB Template
   template: src=database.postgresql.yml.j2
@@ -25,16 +26,20 @@
   when: INIT is defined
 
 - name: Rake DB Setup
-  raw: export PATH=${HOME}/.rvm/bin:${PATH} && cd /home/{{ username }}/app && bash -lc 'rake db:setup'
+  raw: export PATH=${HOME}/.rvm/bin:${PATH} && cd /home/{{ username }}/app && bash -lc 'rake db:create'
   when: INIT is defined
 
-- name: Rake DB Migrate
-  raw: export PATH=${HOME}/.rvm/bin:${PATH} && cd /home/{{ username }}/app && bash -lc 'rake db:migrate'
-  when: MIGRATE is defined or INIT is defined
+- name: Rake DB schema
+  raw: export PATH=${HOME}/.rvm/bin:${PATH} && cd /home/{{ username }}/app && bash -lc 'rake db:schema:load'
+  when: INIT is defined
 
 - name: Rake DB Seed
   raw: export PATH=${HOME}/.rvm/bin:${PATH} && cd /home/{{ username }}/app && bash -lc 'rake db:seed'
-  when: INIT is defined
+  when: SEED is defined
+
+- name: Rake DB Migrate
+  raw: export PATH=${HOME}/.rvm/bin:${PATH} && cd /home/{{ username }}/app && bash -lc 'rake db:migrate'
+  when: MIGRATE is defined
 
 - name: Rake Assets Precompile
   raw: export PATH=${HOME}/.rvm/bin:${PATH} && cd /home/{{ username }}/app && bash -lc 'rake assets:precompile'
