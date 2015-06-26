@@ -11,7 +11,7 @@ connection: &connection
   pool: 5
 
 development:
-  database: {{ db_name }}_dev
+  database: {{ db_name }}_development
   <<: *login
   <<: *connection
 
@@ -21,6 +21,16 @@ test:
   <<: *connection
 
 production:
+  database: {{ db_name }}
+  <<: *login
+  <<: *connection
+
+demo:
+  database: {{ db_name }}
+  <<: *login
+  <<: *connection
+
+staging:
   database: {{ db_name }}
   <<: *login
   <<: *connection

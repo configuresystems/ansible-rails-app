@@ -23,19 +23,18 @@
 
 - name: Exec Bundler
   raw: export PATH=${HOME}/.rvm/bin:${PATH} && cd /home/{{ username }}/app && bash -lc 'bundle install'
-  when: INIT is defined
 
 - name: Rake DB Setup
   raw: export PATH=${HOME}/.rvm/bin:${PATH} && cd /home/{{ username }}/app && bash -lc 'rake db:create'
-  when: INIT is defined
+  when: INITDB is defined
 
 - name: Rake DB schema
   raw: export PATH=${HOME}/.rvm/bin:${PATH} && cd /home/{{ username }}/app && bash -lc 'rake db:schema:load'
-  when: INIT is defined
+  when: INITDB is defined
 
 - name: Rake DB Seed
   raw: export PATH=${HOME}/.rvm/bin:${PATH} && cd /home/{{ username }}/app && bash -lc 'rake db:seed'
-  when: SEED is defined
+  when: SEEDDB is defined
 
 - name: Rake DB Migrate
   raw: export PATH=${HOME}/.rvm/bin:${PATH} && cd /home/{{ username }}/app && bash -lc 'rake db:migrate'
